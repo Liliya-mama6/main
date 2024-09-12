@@ -1,77 +1,29 @@
-class Animal:
-    def __init__(self, name):
-        self.name = name
-
-    alive = True
-    fed = False
-
-    def eat(self, food):
-        if isinstance(food, Plant):
-            if food.edible == True:
-                print(f'{self.name} съел {food.name}')
-                self.fed = True
-            else:
-                print(f"{self.name} не стал есть {food.name}")
-                self.alive = False
-        else:
-            print('Животные ниего другого не едят')
+def personal_sum(a):
+    incorrect_data = 0
+    result = 0
+    for i in range(len(a)):
+        try:
+            result += a[i]
+        except:
+            incorrect_data += 1
+            print(f'Некорректный тип данных для подсчёта суммы - {a[i]}')
+    return [result, incorrect_data]
 
 
-class Plant:
-    def __init__(self, name):
-        self.name = name
+def calculate_average(c):
+    try:
+        a=personal_sum(c)
+        result=a[0]/(len(c)-a[1])
+        if result==-0.0:
+            result=0.0
+    except ZeroDivisionError:
+        result=a[0]/len(c)
+    except TypeError:
+        print('В numbers записан некорректный тип данных')
+        return None
+    return result
 
-    edible = False
-
-
-class Mammal(Animal):
-    edible = True
-
-
-class Predator(Animal):
-    def eat(self, food):
-        if isinstance(food, Plant) == True:
-            if food.edible == True:
-                print(f'{self.name} съел {food.name}')
-                self.fed = True
-            else:
-                print(f"{self.name} не стал есть {food.name}")
-                self.alive = False
-        elif isinstance(food, Animal) == True:#тут захотелось пошутить))))))
-            if isinstance(food, Mammal) == True and food.alive == True:
-                print(f'{self.name} съел {food.name}')
-                self.fed = True
-                food.alive = False
-            elif (isinstance(food, Mammal) == True or isinstance(food, Predator) == True) and food.alive == False:
-                print(f'{self.name} попытался съесть труп животного {food.name}')
-                self.alive = False
-            elif isinstance(food, Predator) == True:
-                print(f'Из-за сильного голода погли оба хищника и {self.name} и {food.name}')
-                self.alive = False
-                food.alive = False
-        else:
-            print('Хищники такого не едят')
-
-
-class Fruit(Plant):
-    edible = True
-
-
-class Flower(Plant):
-    edible = False
-
-
-a1 = Predator('Волк с Уолл-Стрит')
-a2 = Mammal('Хатико')
-p1 = Flower('Цветик семицветик')
-p2 = Fruit('Заводной апельсин')
-
-print(a1.name)
-print(p1.name)
-
-print(a1.alive)
-print(a2.fed)
-a1.eat(p1)
-a2.eat(p2)
-print(a1.alive)
-print(a2.fed)
+print(f'Результат 1: {calculate_average("1, 2, 3")}') # Строка перебирается, но каждый символ - строковый тип
+print(f'Результат 2: {calculate_average([1, "Строка", 3, "Ещё Строка"])}') # Учитываются только 1 и 3
+print(f'Результат 3: {calculate_average(567)}') # Передана не коллекция
+print(f'Результат 4: {calculate_average([42, 15, 36, 13])}') # Всё должно работать
